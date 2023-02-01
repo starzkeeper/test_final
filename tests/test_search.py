@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from pom.searchpage_nav import SearchNav
 import time
 from selenium.webdriver.common.by import By
+from urllib.parse import urlparse
 
 
 @pytest.mark.usefixtures('setup')
@@ -24,17 +25,19 @@ class TestSearch:
             'PHP': 'l=PHP',
             'CSS': 'l=CSS'
         }
-        url = 'https://github.com/search?q=code&ref=simplesearch'
+        url = self.driver.current_url
+        q = urlparse(url).query.partition('&')[0]
         for el in urls.keys():
             names.get_click_language(el)
             wait.until(ec.url_changes(url))
             assert urls[el] in self.driver.current_url
-            url = f'https://github.com/search?{urls[el]}&q=code&type=Repositories'
+            url = f'https://github.com/search?{urls[el]}&{q}&type=Repositories'
             time.sleep(7)
 
     def test_sort(self):
         sorts = SearchNav(self.driver)
         wait = WebDriverWait(self.driver, 20)
+        url = 'https://github.com/search?q=code&ref=simplesearch'
         urls = {
             'Best match': 'https://github.com/search?o=desc&q=code&s=&type=Repositories',
             'Most stars': 'https://github.com/search?o=desc&q=code&s=stars&type=Repositories',
@@ -44,7 +47,6 @@ class TestSearch:
             'Recently updated': 'https://github.com/search?o=desc&q=code&s=updated&type=Repositories',
             'Least recently updated': 'https://github.com/search?o=asc&q=code&s=updated&type=Repositories'
         }
-        url = 'https://github.com/search?q=code&ref=simplesearch'
 
         dropdown = self.driver.find_element(By.XPATH,
                                             '/html/body/div[1]/div[4]/main/div/div[3]/div/div[1]/details/summary/i')
