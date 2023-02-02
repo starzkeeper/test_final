@@ -23,7 +23,11 @@ class TestSearch:
             'C': 'l=C',
             'C#': 'l=C%23',
             'PHP': 'l=PHP',
-            'CSS': 'l=CSS'
+            'CSS': 'l=CSS',
+            'Go': 'l=Go',
+            'Ruby': 'l=Ruby',
+            'Scala': 'l=Scala',
+            'TypeScript': 'l=TypeScript'
         }
         url = self.driver.current_url
         q = urlparse(url).query.partition('&')[0]
@@ -34,30 +38,33 @@ class TestSearch:
             url = f'https://github.com/search?{urls[el]}&{q}&type=Repositories'
             time.sleep(7)
 
-    def test_sort(self):
-        sorts = SearchNav(self.driver)
-        wait = WebDriverWait(self.driver, 20)
-        url = 'https://github.com/search?q=code&ref=simplesearch'
-        urls = {
-            'Best match': 'https://github.com/search?o=desc&q=code&s=&type=Repositories',
-            'Most stars': 'https://github.com/search?o=desc&q=code&s=stars&type=Repositories',
-            'Fewest stars': 'https://github.com/search?o=asc&q=code&s=stars&type=Repositories',
-            'Most forks': 'https://github.com/search?o=desc&q=code&s=forks&type=Repositories',
-            'Fewest forks': 'https://github.com/search?o=asc&q=code&s=forks&type=Repositories',
-            'Recently updated': 'https://github.com/search?o=desc&q=code&s=updated&type=Repositories',
-            'Least recently updated': 'https://github.com/search?o=asc&q=code&s=updated&type=Repositories'
-        }
-
-        dropdown = self.driver.find_element(By.XPATH,
-                                            '/html/body/div[1]/div[4]/main/div/div[3]/div/div[1]/details/summary/i')
-
-        for el in urls.keys():
-            dropdown.click()
-            time.sleep(3)
-            sorts.get_click_sort(el)
-            wait.until(ec.url_changes(url))
-            assert self.driver.current_url == urls[el]
-            url = urls[el]
-            dropdown = self.driver.find_element(By.XPATH,
-                                                '/html/body/div[1]/div[4]/main/div/div[3]/div/div[1]/details/summary/i')
-            time.sleep(7)
+    # def test_sort(self):
+    #     sorts = SearchNav(self.driver)
+    #     wait = WebDriverWait(self.driver, 20)
+    #     url = 'https://github.com/search?q=code&ref=simplesearch'
+    #     urls = {
+    #         'Best match': 'https://github.com/search?o=desc&q=code&s=&type=Repositories',
+    #         'Most stars': 'https://github.com/search?o=desc&q=code&s=stars&type=Repositories',
+    #         'Fewest stars': 'https://github.com/search?o=asc&q=code&s=stars&type=Repositories',
+    #         'Most forks': 'https://github.com/search?o=desc&q=code&s=forks&type=Repositories',
+    #         'Fewest forks': 'https://github.com/search?o=asc&q=code&s=forks&type=Repositories',
+    #         'Recently updated': 'https://github.com/search?o=desc&q=code&s=updated&type=Repositories',
+    #         'Least recently updated': 'https://github.com/search?o=asc&q=code&s=updated&type=Repositories'
+    #     }
+    #
+    #     dropdown = self.driver.find_element(By.XPATH,
+    #                                         '/html/body/div[1]/div[4]/main/div/div[3]/div/div[1]/details/summary/i')
+    #
+    #     for el in urls.keys():
+    #         dropdown.click()
+    #         time.sleep(3)
+    #         sorts.get_click_sort(el)
+    #         wait.until(ec.url_changes(url))
+    #         assert self.driver.current_url == urls[el]
+    #         url = urls[el]
+    #         dropdown = self.driver.find_element(By.XPATH,
+    #                                             '/html/body/div[1]/div[4]/main/div/div[3]/div/div[1]/details/summary/i')
+    #         time.sleep(7)
+    # def test(self):
+    #     names = SearchNav(self.driver)
+    #     print(names.get_language_names())

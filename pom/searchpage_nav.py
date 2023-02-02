@@ -10,32 +10,38 @@ class SearchNav(SeleniumBase):
     def __init__(self, driver):
         super().__init__(driver)
         self.driver = driver
-        self.__nav_links = 'div.border.rounded-2.p-3.mb-3.d-none.d-md-block>ul>li'
+        self.__nav_links = '//details[@id="codesearch_select_language"]/div/details-menu[@class="dropdown-menu dropdown-menu-se"]/a'
 
     def get_nav_links(self):
-        return self.are_visible('css', self.__nav_links, 'Languages')
+        dropdown = self.driver.find_element(By.XPATH,
+                                            '//details[@id="codesearch_select_language"]/summary[@role="button"]')
+        dropdown.click()
+        return self.are_present('xpath', self.__nav_links, 'Languages')
 
-    def get_language_names(self) -> List:
+    def get_language_names(self):
         nav_links = self.get_nav_links()
         nav_links_text = [link.text for link in nav_links]
-        ls = ''.join(nav_links_text)
-        names = ''.join(letter for letter in ls if (letter < '0' or letter > '9') and letter != ',').split('\n')
-        names.remove('')
+        names = ','.join(nav_links_text).split(',')
+        names.remove('Any')
         return names
 
     def get_click_language(self, find_ln):
         click_links = {
-            'Python': '/html/body/div[1]/div[4]/main/div/div[2]/div[1]/ul/li[1]',
-            'JavaScript': '/html/body/div[1]/div[4]/main/div/div[2]/div[1]/ul/li[2]',
-            'Java': '/html/body/div[1]/div[4]/main/div/div[2]/div[1]/ul/li[3]',
-            'HTML': '/html/body/div[1]/div[4]/main/div/div[2]/div[1]/ul/li[4]',
-            'C++': '/html/body/div[1]/div[4]/main/div/div[2]/div[1]/ul/li[5]',
-            'Jupyter Notebook': '/html/body/div[1]/div[4]/main/div/div[2]/div[1]/ul/li[6]',
-            'C': '/html/body/div[1]/div[4]/main/div/div[2]/div[1]/ul/li[7]',
-            'C#': '/html/body/div[1]/div[4]/main/div/div[2]/div[1]/ul/li[8]',
-            'PHP': '/html/body/div[1]/div[4]/main/div/div[2]/div[1]/ul/li[9]',
-            'CSS': '/html/body/div[1]/div[4]/main/div/div[2]/div[1]/ul/li[10]'
-
+            'Any': '//details[@id="codesearch_select_language"]//a[text()="Any"]',
+            'Python': '//details[@id="codesearch_select_language"]//a[text()="Python"]',
+            'JavaScript': '//details[@id="codesearch_select_language"]//a[text()="JavaScript"]',
+            'Java': '//details[@id="codesearch_select_language"]//a[text()="Java"]',
+            'HTML': '//details[@id="codesearch_select_language"]//a[text()="HTML"]',
+            'C++': '//details[@id="codesearch_select_language"]//a[text()="C++"]',
+            'Jupyter Notebook': '//details[@id="codesearch_select_language"]//a[text()="Jupyter Notebook"]',
+            'C': '//details[@id="codesearch_select_language"]//a[text()="C"]',
+            'C#': '//details[@id="codesearch_select_language"]//a[text()="C#"]',
+            'PHP': '//details[@id="codesearch_select_language"]//a[text()="PHP"]',
+            'CSS': '//details[@id="codesearch_select_language"]//a[text()="CSS"]',
+            'Go': '//details[@id="codesearch_select_language"]//a[text()="Go"]',
+            'Ruby': '//details[@id="codesearch_select_language"]//a[text()="Ruby"]',
+            'Scala': '//details[@id="codesearch_select_language"]//a[text()="Scala"]',
+            'TypeScript': '//details[@id="codesearch_select_language"]//a[text()="TypeScript"]'
         }
         clickable = self.driver.find_element(By.XPATH, click_links[find_ln])
         return clickable.click()
