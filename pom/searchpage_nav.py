@@ -1,6 +1,7 @@
 from typing import List
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 
 from base.seleniumbase import SeleniumBase
 
@@ -11,18 +12,14 @@ class SearchNav(SeleniumBase):
         super().__init__(driver)
         self.driver = driver
 
-    def get_nav_links(self, dropdown, nav_links):
+    def get_nav_links(self, dropdown, nav_links) -> List[WebElement]:
         dropdown.click()
         return self.are_present('xpath', nav_links, 'Languages')
 
-    def get_dropdown_names(self, dropdown, nav_links):
+    def get_dropdown_names(self, dropdown, nav_links) -> List:
         nav_links = self.get_nav_links(dropdown, nav_links)
         nav_links_text = [link.text for link in nav_links]
         names = ','.join(nav_links_text).split(',')
-        if 'Any' in names:
-            names.remove('Any')
-        elif 'Best match' in names:
-            names.remove('Best match')
         return names
 
     def get_click_language(self, find_ln):
