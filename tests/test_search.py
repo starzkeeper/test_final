@@ -12,6 +12,7 @@ class TestSearch:
 
     def test_language(self):
         names = SearchNav(self.driver)
+        languages = names.get_language_names()
         wait = WebDriverWait(self.driver, 20)
         urls = {
             'Python': 'l=Python',
@@ -31,12 +32,16 @@ class TestSearch:
         }
         url = self.driver.current_url
         q = urlparse(url).query.partition('&')[0]
-        for el in urls.keys():
+
+        for el in languages:
             names.get_click_language(el)
             wait.until(ec.url_changes(url))
             assert urls[el] in self.driver.current_url
             url = f'https://github.com/search?{urls[el]}&{q}&type=Repositories'
+            dropdown = self.driver.find_element(By.XPATH,
+                                                '//details[@id="codesearch_select_language"]/summary[@role="button"]')
             time.sleep(7)
+            dropdown.click()
 
     # def test_sort(self):
     #     sorts = SearchNav(self.driver)
@@ -65,6 +70,3 @@ class TestSearch:
     #         dropdown = self.driver.find_element(By.XPATH,
     #                                             '/html/body/div[1]/div[4]/main/div/div[3]/div/div[1]/details/summary/i')
     #         time.sleep(7)
-    # def test(self):
-    #     names = SearchNav(self.driver)
-    #     print(names.get_language_names())
