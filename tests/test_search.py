@@ -12,8 +12,12 @@ class TestSearch:
 
     def test_language(self):
         names = SearchNav(self.driver)
-        languages = names.get_language_names()
+        dropdown = self.driver.find_element(By.XPATH,
+                                            '//details[@id="codesearch_select_language"]/summary[@role="button"]')
+        nav_links = '//details[@id="codesearch_select_language"]/div/details-menu[@class="dropdown-menu dropdown-menu-se"]/a'
+        languages = names.get_dropdown_names(dropdown, nav_links)
         wait = WebDriverWait(self.driver, 20)
+
         urls = {
             'Python': 'l=Python',
             'JavaScript': 'l=JavaScript',
@@ -58,7 +62,7 @@ class TestSearch:
     #     }
     #
     #     dropdown = self.driver.find_element(By.XPATH,
-    #                                         '/html/body/div[1]/div[4]/main/div/div[3]/div/div[1]/details/summary/i')
+    #                                         '//details[@id="codesearch_sort_repos"]/summary[@role="button"]')
     #
     #     for el in urls.keys():
     #         dropdown.click()
@@ -68,5 +72,11 @@ class TestSearch:
     #         assert self.driver.current_url == urls[el]
     #         url = urls[el]
     #         dropdown = self.driver.find_element(By.XPATH,
-    #                                             '/html/body/div[1]/div[4]/main/div/div[3]/div/div[1]/details/summary/i')
+    #                                             '//details[@id="codesearch_sort_repos"]/summary[@role="button"]')
     #         time.sleep(7)
+    # def test(self):
+    #     dropdown = self.driver.find_element(By.XPATH,
+    #                                         '//details[@id="codesearch_sort_repos"]/summary[@role="button"]')
+    #     nav_links = '//details[@id="codesearch_sort_repos"]/div/details-menu[@class="dropdown-menu dropdown-menu-se"]/a'
+    #     sorts = SearchNav(self.driver)
+    #     print(sorts.get_dropdown_names(dropdown, nav_links))
