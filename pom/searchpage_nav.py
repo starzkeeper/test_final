@@ -12,17 +12,17 @@ class SearchNav(SeleniumBase):
         super().__init__(driver)
         self.driver = driver
 
-    def get_nav_links(self, dropdown, nav_links) -> List[WebElement]:
+    def get_nav_links(self, dropdown: WebElement, nav_links: str) -> List[WebElement]:
         dropdown.click()
         return self.are_present('xpath', nav_links, 'Languages')
 
-    def get_dropdown_names(self, dropdown, nav_links) -> List:
+    def get_dropdown_names(self, dropdown: WebElement, nav_links: str) -> List:
         nav_links = self.get_nav_links(dropdown, nav_links)
         nav_links_text = [link.text for link in nav_links]
         names = ','.join(nav_links_text).split(',')
         return names
 
-    def get_click_language(self, find_ln):
+    def get_click_language(self, find_ln: str):
         click_links = {
             'Python': '//details[@id="codesearch_select_language"]//a[text()="Python"]',
             'JavaScript': '//details[@id="codesearch_select_language"]//a[text()="JavaScript"]',
@@ -42,7 +42,7 @@ class SearchNav(SeleniumBase):
         clickable = self.driver.find_element(By.XPATH, click_links[find_ln])
         return clickable.click()
 
-    def get_click_sort(self, find_sort):
+    def get_click_sort(self, find_sort: str):
         click_links = {
             'Best match': '//details[@id="codesearch_sort_repos"]//a[text()="Best match"]',
             'Most stars': '//details[@id="codesearch_sort_repos"]//a[text()="Most stars"]',
