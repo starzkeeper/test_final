@@ -49,17 +49,18 @@ class TestSearch:
             time.sleep(7)
             dropdown.click()
 
-    def test_sort(self):  # Not working with other requests
+    def test_sort(self):
         sorts = SearchNav(self.driver)
         wait = WebDriverWait(self.driver, 20)
-        url = 'https://github.com/search?q=code&ref=simplesearch'
+        url = self.driver.current_url
+        q = urlparse(url).query.partition('&')[0]
         urls = {
-            'Most stars': 'https://github.com/search?o=desc&q=code&s=stars&type=Repositories',
-            'Fewest stars': 'https://github.com/search?o=asc&q=code&s=stars&type=Repositories',
-            'Most forks': 'https://github.com/search?o=desc&q=code&s=forks&type=Repositories',
-            'Fewest forks': 'https://github.com/search?o=asc&q=code&s=forks&type=Repositories',
-            'Recently updated': 'https://github.com/search?o=desc&q=code&s=updated&type=Repositories',
-            'Least recently updated': 'https://github.com/search?o=asc&q=code&s=updated&type=Repositories'
+            'Most stars': f'https://github.com/search?o=desc&{q}&s=stars&type=Repositories',
+            'Fewest stars': f'https://github.com/search?o=asc&{q}&s=stars&type=Repositories',
+            'Most forks': f'https://github.com/search?o=desc&{q}&s=forks&type=Repositories',
+            'Fewest forks': f'https://github.com/search?o=asc&{q}&s=forks&type=Repositories',
+            'Recently updated': f'https://github.com/search?o=desc&{q}&s=updated&type=Repositories',
+            'Least recently updated': f'https://github.com/search?o=asc&{q}&s=updated&type=Repositories'
         }
 
         dropdown = self.driver.find_element(By.XPATH,
