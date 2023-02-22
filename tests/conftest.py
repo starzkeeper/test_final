@@ -22,7 +22,7 @@ def get_webdriver(get_chrome_options):
 @pytest.fixture(scope='function')
 def setup(request, get_webdriver):
     driver = get_webdriver
-    url = 'https://github.com/search?q=code&ref=simplesearch'
+    url = 'https://github.com/search?q=script&ref=simplesearch'
     if request.cls is not None:
         request.cls.driver = driver
     driver.get(url)
